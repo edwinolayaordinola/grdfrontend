@@ -1,0 +1,326 @@
+<div class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card mt-5">
+            <div class="card-header border-0">
+              <h2 class="title-green mt-2">REGISTRO DE EMERGENCIA</h2>
+            </div>
+          <div class="panel panel-primary panel-sistema">
+            <div class="panel-heading clickable">
+              <div class="icon-form"><img src="./assets/images/icon-form.png" alt="Icon Formulario"></div>
+              <h3 class="panel-title">Ubicación de la emergencia</h3>
+              <span class="pull-right"><i class="glyphicon glyphicon-triangle-bottom"></i></span>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-4">
+                  <!--form-->
+                    <div class="form-group mb-5">
+                      <label for="selectDepartamento">Departamento <span class="cobliga">(*)</span></label>
+                      <select class="form-control" (change)="selectedDepartamento()" [(ngModel)]="departamentoSelected">
+                        <option>Seleccione</option>
+                        <option *ngFor="let d of departamentos" [value]="d.id">{{d.name}}</option>
+                      </select>
+                      <!--
+                      <span class="cobligatorio">Completar este campo</span>
+                      -->
+                    </div>
+                    <div class="form-group mb-5">
+                      <label for="selectProvincia">Provincia <span class="cobliga">(*)</span></label>
+                      <select class="form-control" [(ngModel)]="provinciaSelected" (change)="selectedProvincia()">
+                        <option *ngFor="let p of provincias" [value]="p.id">{{p.name}}</option>
+                      </select>
+                    </div>
+                    <div class="form-group mb-5">
+                      <label for="inputDistrito">Distrito <span class="cobliga">(*)</span></label>
+                      <select class="form-control" [(ngModel)]="distritoSelected" (change)="selectedDistrito()">
+                        <option *ngFor="let d of distritos" [ngValue]="d">{{d.name}}</option>
+                      </select>
+                      <!--
+                      <input type="text" class="form-control" placeholder="Text input">
+                      -->
+                      <p class="text-right"><a type="button" (click)="agregarDistrito()" class="link-agregar">Agregar</a> +</p>
+                      <a class="link-target" *ngFor="let dist of distritosAdd" (click)="eliminarDistrito(dist.id)">{{dist.name}} <span class="badge-red" style="cursor: pointer">x</span></a>
+                    </div>
+                    <div class="form-group mb-5">
+                      <label for="inputDistrito">Localidad</label>
+                      <input type="text" class="form-control" placeholder="" [(ngModel)]="localidad">
+                      <p class="text-right"><a type="button" (click)="agregarLocalidad()" class="link-agregar">Agregar</a> +</p>
+                      <a class="link-target" *ngFor="let l of localidades" (click)="eliminarLocalidad(l.name)">{{l.name}} <span class="badge-red" style="cursor: pointer">x</span></a>
+                    </div>
+                  <!--/form-->
+                </div>
+                <div class="col-md-8">
+                  <input type="button" value="punto" (click)="dibujarPunto()"/>
+                  <input type="button" value="linea" (click)="dibujarLinea()"/>
+                  <input type="button" value="poligono" (click)="dibujarPoligono()"/>
+                  <input type="button" value="limpiar" (click)="limpiarMapa()"/>
+                  <div id="map">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-primary panel-sistema mt-5">
+            <div class="panel-heading clickable">
+              <div class="icon-form"><img src="./assets/images/icon-form.png" alt="Icon Formulario"></div>
+              <h3 class="panel-title">Datos de la emergencia</h3>
+              <span class="pull-right"><i class="glyphicon glyphicon-triangle-bottom"></i></span>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group mb-5">
+                    <label for="textareaHechos">Hechos <span class="cobliga">(*)</span></label>
+                    <textarea class="form-control" rows="3" [(ngModel)]="hechosInput"></textarea>
+                    <!--
+                    <span class="cobligatorio">Completar este campo</span>
+                    -->
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group mb-5">
+                    <label for="textareaFuente">Fuente de la información sobre incidente</label>
+                    <input type="text" class="form-control" placeholder="" [(ngModel)]="fuenteInfoInput">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group mb-5">
+                    <label for="textFincidente">Fecha del Incidente <span class="cobliga">(*)</span></label>
+                    <div class="input-group">
+                      <input class="form-control" placeholder="yyyy-mm-dd"  [(ngModel)]="fechaIncidenteInput" ngbDatepicker #d="ngbDatepicker" [placement]="placement" [positionTarget]="buttonEl">
+                      <button #buttonEl class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"></button>
+                      <!--
+                      <input class="form-control" name="dp" [(ngModel)]="fechaIncidenteInput" ngbDatepicker #d="ngbDatepicker" >
+                      
+                      <input class="form-control" name="dp" [(ngModel)]="fechaIncidenteInput" ngbDatepicker>
+                      <div class="input-group-append">
+                        <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"></button>
+                      </div>
+                      -->
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group mb-5">
+                    <label for="textareaFuente">Zona afectada</label>
+                    <input type="text" class="form-control" placeholder="" [(ngModel)]="zonaAfectadaInput">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group mb-5">
+                    <label for="textareaFuente">N° de usuarios afectados</label>
+                    <input type="text" class="form-control" placeholder="" [(ngModel)]="nroUsuarioInput">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group mb-5">
+                    <label for="textareaAfectada">Cantidad de población afectada</label>
+                    <input type="text" class="form-control" placeholder="" [(ngModel)]="cantidadPoblacionAfectadaInput">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group mb-5">
+                    <label for="selectAfectacion">Afectación del servicio</label>
+                    <select class="form-control" [(ngModel)]="afectacionServicioSelected">
+                      <option>Seleccione</option>
+                      <option *ngFor="let asserv of afectacionServicios" [value]="asserv.id">{{asserv.name}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group mb-5">
+                    <label for="selectFenomeno">Tipo de fenómeno <span class="cobliga">(*)</span></label>
+                    <select class="form-control" [(ngModel)]="typePhenomenonSelected" (change)="selectedTypePhenomenon()">
+                      <option>Seleccione</option>
+                      <option *ngFor="let tf of tiposFenomenos" [value]="tf.id">{{tf.name}}</option>
+                    </select>
+                    <!--
+                    <span class="cobligatorio">Completar este campo</span>
+                    -->
+                  </div>
+                </div>
+                <div class="col-md-3" [hidden]="hiddenTipoFenomenoOtro">
+                  <div class="form-group mb-5">
+                    <label for="textareaOtros">Otros</label>
+                    <input type="text" class="form-control" placeholder="" [(ngModel)]="tipoFenomenoOtro">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group mb-5">
+                    <label for="selectPrestador">Tipo de prestador <span class="cobliga">(*)</span></label>
+                    <select class="form-control" [(ngModel)]="typeProviderSelected" (change)="selectedTypeProvider()">
+                      <option>Seleccione</option>
+                      <option *ngFor="let tp of tiposPrestadores" [value]="tp.id">{{tp.name}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-3" [hidden]="hiddenTipoPrestadorEps">
+                  <div class="form-group mb-5">
+                    <label for="selectPrestador">prestador <span class="cobliga">(*)</span></label>
+                    <select class="form-control" [(ngModel)]="prestadorSelected">
+                      <option *ngFor="let p of prestadores" [value]="p.id">{{p.name}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-3" [hidden]="hiddenTipoPrestadorOtro">
+                  <div class="form-group mb-5">
+                    <label for="textareaOtro">Otro</label>
+                    <input type="text" class="form-control" placeholder="" [(ngModel)]="tipoPrestadorOtro">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group mb-6">
+                    <label for="textareaArchivos">Adjuntar archivos</label>
+                    <div class="input-group mb-6">
+                      <div class="input-group-prepend">
+                        <input type="file" class="btn btn-agregar" (change)="selectedArchivos($event)"  accept=".pdf, .xls, .xlsx" multiple>
+                      </div>
+                    </div>
+                    <a class="link-target-line" *ngFor="let item of archivos">{{item.name}}<span class="badge-red" style="cursor: pointer;"> x</span></a>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group mb-6">
+                    <label for="textareaFotos">Adjuntar fotos</label>
+                    <div class="input-group mb-6">
+                      <div class="input-group-prepend">
+                        <input type="file" class="btn btn-agregar" (change)="selectedFotos($event)" accept=".jpeg, .png, .tiff, .bpm, .gif, .png" multiple>
+                      </div>
+                    </div>
+                    <a class="link-target-line" *ngFor="let item of fotos">{{item.name}}<span class="badge-red" style="cursor: pointer;"> x</span></a>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group mb-5">
+                    <label for="textareaAcciones">Acciones de la EPS ante la emergencia o el peligro inminente </label>
+                    <textarea class="form-control" rows="3" [(ngModel)]="actionsTakenInput"></textarea>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group mb-5">
+                    <label for="textareaApoyo">¿Se recibe algún apoyo para la atención del incidente? <br/>Detallar tipo y cantidad </label>
+                    <textarea class="form-control" rows="3" [(ngModel)]="descriptionSupportInput"></textarea>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group mb-5">
+                    <label for="textareaRequerimientos">¿Se tienen mayores requerimientos? <br/>Detallar tipo y cantidad </label>
+                    <textarea class="form-control" rows="3" [(ngModel)]="highestRequirement"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          
+          <div class="panel panel-primary panel-sistema mt-5">
+            <div class="panel-heading clickable">
+              <div class="icon-form"><img src="./assets/images/icon-form.png" alt="Icon Formulario"></div>
+              <h3 class="panel-title">Componentes del sistema de saneamiento afectados</h3>
+              <span class="pull-right"><i class="glyphicon glyphicon-triangle-bottom"></i></span>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                
+                <div class="col-md-12 bg-gris">
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="form-group mb-5">
+                        <label for="textareaTipoC">Tipo de componente <span class="cobliga">(*)</span></label>
+                        <select class="form-control" [(ngModel)]="tipoComponenteSelected" (change)="selectedTipoComponente()">
+                          <option value="">Seleccione</option>
+                          <option *ngFor="let tp of tiposcomponentes" [ngValue]="tp">{{tp.name}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group mb-5">
+                        <label for="textareaNombre">Nombre </label>
+                        <input type="text" class="form-control" placeholder="" [(ngModel)]="nombreTipoComponente">
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group mb-5">
+                        <label for="textareaAfectacion">Afectación <span class="cobliga">(*)</span></label>
+                        <select class="form-control" [(ngModel)]="afectationSelected" (change)="selectedAfectation()">
+                          <option value="">Seleccione</option>
+                          <option *ngFor="let a of afectation" [ngValue]="a">{{a.name}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group mb-3">
+                        <label for="textareaDescripcion">Descripción de la afectación</label>
+                        <input type="text" class="form-control" placeholder="" [(ngModel)]="descripcionAfectacion">
+                      </div>
+                      <a type="button" class="btn btn-success btn-block paddinglr" (click)="agregarComponente()"><i class="fa fa-plus" aria-hidden="true"></i> Agregar</a>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-12 mt-5 mb-5">
+                  <p class="txt-colorblue"><img src="./assets/images/icon-lista.png" alt="Icon lista" class="img-list"> Lista de componentes</p>
+                  <hr class="border-color">
+                  <div class="card-body table-responsive p-0">
+                    <table class="table table-valign-middle table-sistema2">
+                      <thead>
+                        <tr>
+                          <th>N°</th>
+                          <th>Tipo de componente</th>
+                          <th>Nombre</th>
+                          <th>Afectación</th>
+                          <th>Descripción de la afectación</th>
+                          <th>Eliminar</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of componentes; let i = index">
+                          <td>{{i+1}}</td>
+                          <td>{{item.componentType}}</td>
+                          <td>{{item.name}}</td>
+                          <td>{{item.afectacion}}</td>
+                          <td>{{item.descripcion}}</td>
+                          <td><a (click)="eliminarComponente(i)"><img src="./assets/images/icon-eliminar.png" alt="Icon eliminar" class="img-list"></a></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+        
+
+        <div class="row mb-5 mt-4">
+            <div class="col-md-12 text-center">
+              <a type="button" class="btn btn-white paddinglr3" (click)="cancelarEmergencia()" >Cancelar</a>
+              <a type="button" class="btn btn-blue paddinglr3" (click)="guardarEmergencia()">Guardar</a>
+            </div>
+          </div>
+
+        </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <button type="button" [hidden]="hiddenModalError" #btnmodalerror class="btn btn-default" data-toggle="modal" data-target="#modal-error"></button>
+  <div class="modal fade" id="modal-error">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body text-center">
+          <p class="text-center mt-3">Debe adjuntar hasta 3 archivos</p>
+          <a type="button" class="btn btn-blue paddinglr3 mt-3 mb-3">Aceptar</a>
+        </div>
+      </div>
+    </div>
+  </div>

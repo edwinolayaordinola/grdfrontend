@@ -1,0 +1,56 @@
+<div class="hold-transition login-page">
+    <div class="content">
+      <div class="row">
+        <div class="col-md-12">
+          <h6 class="text-center txt-phone" style="display: none;">Sistema Modular  de Gestión del Riesgo de Desastres y Adaptación al cambio climático.</h6>
+        </div>
+      </div>
+    </div>
+  <div class="login-box">
+    <div class="card">
+      <div class="card-body login-card-body">
+        <div class="content">
+          <div class="row">
+            <div class="col-md-6 no-paddingr no-phone">
+              <div class="txt-title-login">
+                <h1>Sistema Modular de Gestión del Riesgo de Desastres y Adaptación al cambio climático.</h1>
+                <!--
+                <p>Amet minim mollit non deserunt ullamco <br/>est sit aliqua</p>
+                -->
+              </div>
+              <img src="./assets/images/image-bg-login.png" alt="imagen sunass" class="img-fluid">
+            </div>
+            <div class="col-md-6 no-paddingl box-phone">
+              <div class="col-lg-8 col-lg-offset-2 col-md-12 mt-4 block-sesion">
+                <div class="login-logo">
+                  <img src="./assets/images/isotipo-sunass.png" alt="isotipo sunass" style="max-width: 90px;">
+                </div>
+                <h3 class="text-center txt-colorblue">Iniciar sesión</h3>
+                <p class="login-box-msg">Llena los campos para iniciar sesión en el sistema</p>
+                  <div class="input-group mb-3">
+                    <p class="txt-login">Usuario </p>
+                    <input type="email" class="form-control input-login" [(ngModel)]="user" placeholder="Usuario">
+                  </div>
+                  <div class="input-group mb-3" id="show_hide_password">
+                    <p class="txt-login">Contraseña </p>
+                    <input type="password" class="form-control no-liner" [(ngModel)]="password" placeholder="Password">
+                    <!--
+                    <div class="input-group-append">
+                      <div class="input-group-text bg-white">
+                        <a (click)="eyePaswword()"><span class="fa fa-eye-slash"></span></a>
+                      </div>
+                    </div>
+                    -->
+                  </div>
+                  <button class="btn btn-blue btn-block paddinglr3 mt-5" (click)="iniciarSesion()" >Iniciar sesión</button>
+              </div>
+              <div id="msjFailed" class="text-center pt-4 text-danger">
+                {{msjError}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

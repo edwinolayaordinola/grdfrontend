@@ -1,0 +1,96 @@
+<div class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card  pdn-4060">
+          <div class="row">
+            <div class="col-md-4" style="position: relative;" >
+              <div class="form-group mb-3">
+                <label for="selectDepartamento">Usuario <span class="cobliga">(*)</span></label>
+                <input type="text" class="form-control" placeholder="" [disabled]="flagEdicion" (keyup)="keypressUser($event)" [(ngModel)]="userSelected">
+                <div class="list-group" [hidden]="hideenListUsers" style="position: absolute;  top: 75px; z-index: 2; overflow-y: auto;max-height: 500px;">
+                  <button type="button" class="list-group-item list-group-item-action" (click)="selectedUser(uldap)" *ngFor="let uldap of usuariosLdap">{{uldap.attributes.mail}}</button>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group mb-3">
+                <label for="selectDepartamento">Nombres </label>
+                <input type="text" class="form-control" placeholder="" [(ngModel)]="nameSelected" disabled>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group mb-3">
+                <label>Apellidos </label>
+                <input type="text" class="form-control" placeholder="" [(ngModel)]="surnameSelected" disabled>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group mb-3">
+                <label>Correo electrónico </label>
+                <input type="text" class="form-control" placeholder="" [(ngModel)]="mailSelected" disabled>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group mb-3">
+                <label>Cargo </label>
+                <input type="text" class="form-control" placeholder="" [(ngModel)]="positionSelected" disabled>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group mb-3">
+                <label>Área </label>
+                <input type="text" class="form-control" placeholder="" [(ngModel)]="areaSelected" disabled>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 mt-5 mb-5">
+              <h5><img src="./assets/images/icon-datos.png" alt="Icon datos" class="img-list"> Asignar módulos <span class="cobliga">(*)</span></h5>
+              <hr>
+              <div class="col-md-12 bg-gris pdn-3050">
+                <div *ngIf="userEdit == null">
+                  <div class="row" *ngFor="let m of modules">
+                    <div class="col-md-2">
+                      <p><img src="./assets/images/bullet-1.png" alt=""> {{m.name}}</p>
+                    </div>
+                    <div class="col-md-2" *ngFor="let p of profiles">
+                      <div class="custom-control custom-radio">
+                        <input class="custom-control-input" type="radio" id="{{m.id}}-{{p.id}}"  name="{{m.id}}" (click)="selectProfile($event)" >
+                        <label for="{{m.id}}-{{p.id}}" class="custom-control-label">{{p.name}}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="userEdit !=null">
+                    <div class="row" *ngFor="let m of modules">
+                      <div class="col-md-2">
+                        <p><img src="./assets/images/bullet-1.png" alt=""> {{m.name}}</p>
+                      </div>
+                      <div class="col-md-2" *ngFor="let p of profiles">
+                        <div *ngFor="let mpe of modulesProfiles">
+                          <div class="custom-control custom-radio">
+                            <div *ngIf="m.id == mpe.id">
+                              <input class="custom-control-input" type="radio" id="{{m.id}}-{{p.id}}"  name="{{m.id}}" 
+                                    [checked]="m.id == mpe.id && p.id == mpe.profile.id"  (click)="selectProfile($event)">
+                              <label for="{{m.id}}-{{p.id}}" class="custom-control-label">{{p.name}}</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-5 mt-4">
+            <div class="col-md-12 text-center">
+              <a type="button" class="btn btn-white paddinglr3 mb-3" (click)="cancelarUsuario()" >Cancelar</a>
+              <a type="button" class="btn btn-blue paddinglr3 mb-3" (click)="guardarUsuario()">Guardar</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
